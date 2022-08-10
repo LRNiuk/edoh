@@ -1,0 +1,774 @@
+[gd_scene load_steps=49 format=2]
+
+[ext_resource path="res://Base/Botones/Circulo.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Base/Botones/Cuadrado.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Base/Botones/Rombo.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Base/Botones/Triangulo1.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Base/Botones/Triangulo2.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Base/Botones/Triangulo3.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Base/Botones/Triangulo4.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Base/Botones/Triangulo5.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Base/Botones/Triangulo6.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Base/Botones/Triangulo7.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Base/Botones/Triangulo8.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Base/Chars/Hueso1.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Base/Chars/Hueso2.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Base/Chars/Hueso3.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Base/Chars/Hueso4.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Base/Chars/Hueso5.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Base/Chars/Hueso6.tscn" type="PackedScene" id=17]
+[ext_resource path="res://Base/Chars/Hueso7.tscn" type="PackedScene" id=18]
+[ext_resource path="res://Base/Chars/Hueso8.tscn" type="PackedScene" id=19]
+[ext_resource path="res://Sprites/stage.png" type="Texture" id=20]
+[ext_resource path="res://Base/Chars/PROT.tscn" type="PackedScene" id=21]
+[ext_resource path="res://Sprites/menu.png" type="Texture" id=22]
+[ext_resource path="res://Sprites/boton1.png" type="Texture" id=23]
+[ext_resource path="res://Sprites/boton2.png" type="Texture" id=24]
+[ext_resource path="res://Sprites/boton3.png" type="Texture" id=25]
+[ext_resource path="res://Sprites/nubes1.png" type="Texture" id=26]
+[ext_resource path="res://Sprites/nubes2.png" type="Texture" id=27]
+[ext_resource path="res://Sprites/circleblack.png" type="Texture" id=28]
+[ext_resource path="res://Sprites/reloj.png" type="Texture" id=29]
+[ext_resource path="res://Base/Botones/Boton4.tscn" type="PackedScene" id=30]
+[ext_resource path="res://Base/Fonts/VCR_OS_MONO Dynamic.tres" type="DynamicFont" id=31]
+[ext_resource path="res://Base/Botones/Boton5.tscn" type="PackedScene" id=32]
+[ext_resource path="res://Base/Botones/Boton6.tscn" type="PackedScene" id=33]
+[ext_resource path="res://Base/Botones/Boton7.tscn" type="PackedScene" id=34]
+[ext_resource path="res://Sprites/bastonburn.png" type="Texture" id=35]
+[ext_resource path="res://Sprites/fadestartgame.png" type="Texture" id=36]
+[ext_resource path="res://Sprites/black.png" type="Texture" id=37]
+[ext_resource path="res://Sprites/arrow.png" type="Texture" id=38]
+[ext_resource path="res://Sound/fireactivated.ogg" type="AudioStream" id=39]
+[ext_resource path="res://Sound/reloj.ogg" type="AudioStream" id=40]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+export (PackedScene) var BOTON1
+export (PackedScene) var BOTON2
+export (PackedScene) var BOTON3
+export (PackedScene) var BOTON4
+export (PackedScene) var BOTON5
+export (PackedScene) var BOTON6
+export (PackedScene) var BOTON7
+export (PackedScene) var BOTON8
+export (PackedScene) var BOTON9
+export (PackedScene) var BOTON10
+export (PackedScene) var BOTON11
+
+export (PackedScene) var HUESO1
+export (PackedScene) var HUESO2
+export (PackedScene) var HUESO3
+export (PackedScene) var HUESO4
+export (PackedScene) var HUESO5
+export (PackedScene) var HUESO6
+export (PackedScene) var HUESO7
+export (PackedScene) var HUESO8
+
+var boton1
+var boton2
+var boton3
+
+var randomint
+var flagarray1 = []
+var flagbotonpresionado = false
+var flagturnonumero = 0
+var burnflag = false
+var endgameflag = false
+
+func _ready():
+	if STAGEGLOBAL.FIRSTTIME == true:
+		get_node(\"StartGame\").wait_time = 3.4
+	get_node(\"StartGame\").start()
+
+func get_random_number(nummax):
+    randomize()
+    return randi()%nummax+1
+
+func randomcalacas(numenemigos):
+	flagarray1 = []
+	randomint = get_random_number(8)
+	for a in range (0,numenemigos):
+		while randomint in flagarray1:
+			randomint = get_random_number(8)
+		flagarray1.append(randomint)
+		match randomint:
+			1:get_node(\"Chars\").add_child(HUESO1.instance())
+			2:get_node(\"Chars\").add_child(HUESO2.instance())
+			3:get_node(\"Chars\").add_child(HUESO3.instance())
+			4:get_node(\"Chars\").add_child(HUESO4.instance())
+			5:get_node(\"Chars\").add_child(HUESO5.instance())
+			6:get_node(\"Chars\").add_child(HUESO6.instance())
+			7:get_node(\"Chars\").add_child(HUESO7.instance())
+			8:get_node(\"Chars\").add_child(HUESO8.instance())
+
+func randombuttons():
+	if STAGEGLOBAL.CIRCULOINT == 0:
+		STAGEGLOBAL.CIRCULOINT = get_random_number(150)
+		if 1 <= STAGEGLOBAL.CIRCULOINT and STAGEGLOBAL.CIRCULOINT <= STAGEGLOBAL.PORCENTAJECIRCULO/2:
+			boton1 = BOTON1.instance()
+			get_node(\"menu/Boton1\").add_child(boton1)
+		elif (STAGEGLOBAL.PORCENTAJECIRCULO/2)+1 <= STAGEGLOBAL.CIRCULOINT and STAGEGLOBAL.CIRCULOINT <= STAGEGLOBAL.PORCENTAJECIRCULO:
+			boton2 = BOTON1.instance()
+			get_node(\"menu/Boton2\").add_child(boton2)
+		elif STAGEGLOBAL.PORCENTAJECIRCULO+1 <= STAGEGLOBAL.CIRCULOINT and STAGEGLOBAL.CIRCULOINT <= (STAGEGLOBAL.PORCENTAJECIRCULO/2)*3:
+			boton3 = BOTON1.instance()
+			get_node(\"menu/Boton3\").add_child(boton3)
+		else:
+			STAGEGLOBAL.CIRCULOINT = 0
+	flagarray1 = []
+	
+	if STAGEGLOBAL.PORCENTAJECIRCULO/2 < STAGEGLOBAL.CIRCULOINT or STAGEGLOBAL.CIRCULOINT == 0:
+		randomint = get_random_number(10)
+		flagarray1.append(randomint)
+		match randomint:
+			1:
+				boton1 = BOTON2.instance()
+				get_node(\"menu/Boton1\").add_child(boton1)
+			2:
+				boton1 = BOTON3.instance()
+				get_node(\"menu/Boton1\").add_child(boton1)
+			3:
+				boton1 = BOTON4.instance()
+				get_node(\"menu/Boton1\").add_child(boton1)
+			4:
+				boton1 = BOTON5.instance()
+				get_node(\"menu/Boton1\").add_child(boton1)
+			5:
+				boton1 = BOTON6.instance()
+				get_node(\"menu/Boton1\").add_child(boton1)
+			6:
+				boton1 = BOTON7.instance()
+				get_node(\"menu/Boton1\").add_child(boton1)
+			7:
+				boton1 = BOTON8.instance()
+				get_node(\"menu/Boton1\").add_child(boton1)
+			8:
+				boton1 = BOTON9.instance()
+				get_node(\"menu/Boton1\").add_child(boton1)
+			9:
+				boton1 = BOTON10.instance()
+				get_node(\"menu/Boton1\").add_child(boton1)
+			10:
+				boton1 = BOTON11.instance()
+				get_node(\"menu/Boton1\").add_child(boton1)
+			
+	if STAGEGLOBAL.CIRCULOINT < (STAGEGLOBAL.PORCENTAJECIRCULO/2)+1 or STAGEGLOBAL.PORCENTAJECIRCULO < STAGEGLOBAL.CIRCULOINT:
+		randomint = get_random_number(10)
+		while randomint in flagarray1:
+			randomint = get_random_number(10)
+		flagarray1.append(randomint)
+		match randomint:
+			1:
+				boton2 = BOTON2.instance()
+				get_node(\"menu/Boton2\").add_child(boton2)
+			2:
+				boton2 = BOTON3.instance()
+				get_node(\"menu/Boton2\").add_child(boton2)
+			3:
+				boton2 = BOTON4.instance()
+				get_node(\"menu/Boton2\").add_child(boton2)
+			4:
+				boton2 = BOTON5.instance()
+				get_node(\"menu/Boton2\").add_child(boton2)
+			5:
+				boton2 = BOTON6.instance()
+				get_node(\"menu/Boton2\").add_child(boton2)
+			6:
+				boton2 = BOTON7.instance()
+				get_node(\"menu/Boton2\").add_child(boton2)
+			7:
+				boton2 = BOTON8.instance()
+				get_node(\"menu/Boton2\").add_child(boton2)
+			8:
+				boton2 = BOTON9.instance()
+				get_node(\"menu/Boton2\").add_child(boton2)
+			9:
+				boton2 = BOTON10.instance()
+				get_node(\"menu/Boton2\").add_child(boton2)
+			10:
+				boton2 = BOTON11.instance()
+				get_node(\"menu/Boton2\").add_child(boton2)
+	
+	if STAGEGLOBAL.CIRCULOINT < STAGEGLOBAL.PORCENTAJECIRCULO+1 or (STAGEGLOBAL.PORCENTAJECIRCULO/2)*3 < STAGEGLOBAL.CIRCULOINT:
+		randomint = get_random_number(10)
+		while randomint in flagarray1:
+			randomint = get_random_number(10)
+		flagarray1.append(randomint)
+		match randomint:
+			1:
+				boton3 = BOTON2.instance()
+				get_node(\"menu/Boton3\").add_child(boton3)
+			2:
+				boton3 = BOTON3.instance()
+				get_node(\"menu/Boton3\").add_child(boton3)
+			3:
+				boton3 = BOTON4.instance()
+				get_node(\"menu/Boton3\").add_child(boton3)
+			4:
+				boton3 = BOTON5.instance()
+				get_node(\"menu/Boton3\").add_child(boton3)
+			5:
+				boton3 = BOTON6.instance()
+				get_node(\"menu/Boton3\").add_child(boton3)
+			6:
+				boton3 = BOTON7.instance()
+				get_node(\"menu/Boton3\").add_child(boton3)
+			7:
+				boton3 = BOTON8.instance()
+				get_node(\"menu/Boton3\").add_child(boton3)
+			8:
+				boton3 = BOTON9.instance()
+				get_node(\"menu/Boton3\").add_child(boton3)
+			9:
+				boton3 = BOTON10.instance()
+				get_node(\"menu/Boton3\").add_child(boton3)
+			10:
+				boton3 = BOTON11.instance()
+				get_node(\"menu/Boton3\").add_child(boton3)
+
+func tweenfuego_fade_out():
+	get_node(\"Audio/Tween\").interpolate_property(get_node(\"Audio\"), \"volume_db\", 0, -80, 1.5, 1, Tween.EASE_IN, 0)
+	get_node(\"Audio/Tween\").start()
+
+func _process(delta):
+	if STAGEGLOBAL.HPPROT <= 0 and endgameflag == false: 
+		get_node(\"menu/EndGame\").play(\"End\")
+		if STAGEGLOBAL.SOUND == true:
+			get_node(\"AudioEnd\").play()
+		endgameflag = true
+	if STAGEGLOBAL.JUGADAHECHA == true and flagbotonpresionado == false:
+		get_node(\"Turn\").start()
+		flagbotonpresionado = true
+	get_node(\"menu/Boton4/Costo\").set_text(\"$\"+str(get_node(\"menu/Boton4\").precio))
+	get_node(\"menu/Boton4/ValorEscudo\").set_text(str(STAGEGLOBAL.ESCUDO))
+	get_node(\"menu/Boton5/Costo\").set_text(\"$\"+str(get_node(\"menu/Boton5\").precio))
+	get_node(\"menu/Boton5/PorcentajeCirculo\").set_text(str(STAGEGLOBAL.PORCENTAJECIRCULO)+\"%\")
+	get_node(\"menu/Boton6/Costo\").set_text(\"$\"+str(get_node(\"menu/Boton6\").precio))
+	if STAGEGLOBAL.PODERBALA <= 5000:get_node(\"menu/Boton6/DañoActual\").set_text(str(STAGEGLOBAL.PODERBALA))
+	else:get_node(\"menu/Boton6/DañoActual\").set_text(\"BURN\")
+	get_node(\"menu/Boton7/Costo\").set_text(\"$\"+str(get_node(\"menu/Boton7\").precio))
+	get_node(\"menu/Cash\").set_text(\"$\"+str(STAGEGLOBAL.SCORE))
+	get_node(\"menu/Score\").set_text(str(STAGEGLOBAL.TOTALSCORE))
+	if STAGEGLOBAL.FUEGO == true and burnflag == false:
+		if STAGEGLOBAL.SOUND == true:
+			get_node(\"Audio\").play()
+		get_node(\"menu/bastonburn\").show()
+		burnflag = true
+
+func _on_StartGame_timeout():
+	randomcalacas(1)
+	randombuttons()
+	STAGEGLOBAL.TURNONUMERO += 1
+
+func _on_Turn_timeout():
+	if STAGEGLOBAL.PORCENTAJECIRCULO/2 < STAGEGLOBAL.CIRCULOINT or STAGEGLOBAL.CIRCULOINT == 0:
+		boton1.queue_free()
+	if STAGEGLOBAL.CIRCULOINT < (STAGEGLOBAL.PORCENTAJECIRCULO/2)+1 or STAGEGLOBAL.PORCENTAJECIRCULO < STAGEGLOBAL.CIRCULOINT:
+		boton2.queue_free()
+	if STAGEGLOBAL.CIRCULOINT < STAGEGLOBAL.PORCENTAJECIRCULO+1 or (STAGEGLOBAL.PORCENTAJECIRCULO/2)*3 < STAGEGLOBAL.CIRCULOINT:
+		boton3.queue_free()
+	randombuttons()
+	if 1+flagturnonumero <= STAGEGLOBAL.TURNONUMERO and STAGEGLOBAL.TURNONUMERO <= 3+flagturnonumero:
+		randomcalacas(1)
+	elif 4+flagturnonumero <= STAGEGLOBAL.TURNONUMERO and STAGEGLOBAL.TURNONUMERO <= 6+flagturnonumero:
+		randomcalacas(2)
+	elif 7+flagturnonumero <= STAGEGLOBAL.TURNONUMERO and STAGEGLOBAL.TURNONUMERO <= 12+flagturnonumero:
+		randomcalacas(3)
+	elif 13+flagturnonumero <= STAGEGLOBAL.TURNONUMERO and STAGEGLOBAL.TURNONUMERO <= 19+flagturnonumero:
+		randomcalacas(4)
+	elif 20+flagturnonumero == STAGEGLOBAL.TURNONUMERO:
+		randomcalacas(6)
+		STAGEGLOBAL.HPHUESOS += 1
+		flagturnonumero += 20
+	STAGEGLOBAL.TURNEND = true
+	STAGEGLOBAL.TURNONUMERO += 1
+	if STAGEGLOBAL.FUEGO == true:
+		STAGEGLOBAL.FUEGO = false
+		burnflag = false
+		get_node(\"menu/bastonburn\").hide()
+		STAGEGLOBAL.PODERBALA -= 5000
+	get_node(\"PuedeJugar\").start()
+
+func _on_PuedeJugar_timeout():
+	STAGEGLOBAL.JUGADAHECHA = false
+	flagbotonpresionado = false
+	print(STAGEGLOBAL.SCORE)
+
+func _on_Anims_animation_finished(anim_name):
+	if anim_name == \"START\":
+		get_node(\"StartGame/fadestartgame\").queue_free()
+		if STAGEGLOBAL.FIRSTTIME == true:
+			get_node(\"Anims\").play(\"Tutorial\")
+		else:
+			get_node(\"StartGame/gray\").queue_free()
+			get_node(\"StartGame/arrow\").queue_free()
+			get_node(\"StartGame/arrow2\").queue_free()
+			get_node(\"StartGame/arrow3\").queue_free()
+	if anim_name == \"Tutorial\":
+		get_node(\"StartGame/gray\").queue_free()
+		get_node(\"StartGame/arrow\").queue_free()
+		get_node(\"StartGame/arrow2\").queue_free()
+		get_node(\"StartGame/arrow3\").queue_free()
+		STAGEGLOBAL.FIRSTTIME = false
+
+func _on_Tween_tween_completed(object, key):
+	object.stop()
+	get_node(\"Audio\").volume_db = 0
+
+func _on_EndGame_animation_finished(anim_name):
+	if anim_name == \"End\":
+		get_tree().change_scene(\"res://Base/gameover.tscn\")"
+
+[sub_resource type="Animation" id=2]
+resource_name = "START"
+tracks/0/type = "value"
+tracks/0/path = NodePath("StartGame/fadestartgame:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.4, 0.4 ), Vector2( 5, 5 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("StartGame/fadestartgame:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 240, 400 ), Vector2( 240, 2300 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "Tutorial"
+length = 2.4
+step = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("StartGame/gray:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4, 2, 2.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 0.740353 ), Color( 0, 0, 0, 0.740353 ), Color( 0, 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("StartGame/arrow:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8, 1.2, 1.6, 2, 2.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false, true, false, true, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("StartGame/arrow2:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8, 1.2, 1.6, 2, 2.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false, true, false, true, false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("StartGame/arrow3:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8, 1.2, 1.6, 2, 2.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false, true, false, true, false ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "Nubes"
+length = 60.0
+loop = true
+step = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("NubesPara/nubes1:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 28, 30, 60 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -672, 0 ), Vector2( 720, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("NubesPara/nubes1:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 28, 30 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("NubesPara/nubes2:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 30, 60 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -720, 0 ), Vector2( -1440, 0 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "End"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("EndGame/reloj:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 20, 0 ), Vector2( -20, 0 ), Vector2( 20, 0 ), Vector2( -20, 0 ), Vector2( 20, 0 ), Vector2( -20, 0 ), Vector2( 20, 0 ), Vector2( -20, 0 ), Vector2( 5, 0 ), Vector2( -5, 0 ), Vector2( 5, 0 ), Vector2( -5, 0 ), Vector2( 5, 0 ), Vector2( -5, 0 ), Vector2( 5, 0 ), Vector2( -5, 0 ), Vector2( 5, 0 ), Vector2( -5, 0 ), Vector2( 5, 0 ), Vector2( -5, 0 ), Vector2( 5, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("EndGame/reloj:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("EndGame/reloj:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("EndGame/circleblack:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("EndGame/circleblack:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.25, 0.25 ), Vector2( 3, 3 ) ]
+}
+
+[sub_resource type="Gradient" id=6]
+offsets = PoolRealArray( 0, 0.639053, 1 )
+colors = PoolColorArray( 0.96875, 0.806917, 0.0681152, 1, 0.996094, 0.11673, 0, 1, 0.999628, 0.915879, 0.904762, 0 )
+
+[sub_resource type="GradientTexture" id=7]
+gradient = SubResource( 6 )
+
+[sub_resource type="ParticlesMaterial" id=8]
+emission_shape = 1
+emission_sphere_radius = 20.0
+flag_disable_z = true
+gravity = Vector3( 0, -30, 0 )
+angular_velocity = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 100.0
+angle = 90.0
+angle_random = 1.0
+scale = 2.0
+scale_random = 1.0
+color_ramp = SubResource( 7 )
+
+[node name="Node" type="Node"]
+script = SubResource( 1 )
+BOTON1 = ExtResource( 1 )
+BOTON2 = ExtResource( 2 )
+BOTON3 = ExtResource( 3 )
+BOTON4 = ExtResource( 4 )
+BOTON5 = ExtResource( 5 )
+BOTON6 = ExtResource( 6 )
+BOTON7 = ExtResource( 7 )
+BOTON8 = ExtResource( 8 )
+BOTON9 = ExtResource( 9 )
+BOTON10 = ExtResource( 10 )
+BOTON11 = ExtResource( 11 )
+HUESO1 = ExtResource( 12 )
+HUESO2 = ExtResource( 13 )
+HUESO3 = ExtResource( 14 )
+HUESO4 = ExtResource( 15 )
+HUESO5 = ExtResource( 16 )
+HUESO6 = ExtResource( 17 )
+HUESO7 = ExtResource( 18 )
+HUESO8 = ExtResource( 19 )
+
+[node name="Anims" type="AnimationPlayer" parent="."]
+autoplay = "START"
+anims/START = SubResource( 2 )
+anims/Tutorial = SubResource( 3 )
+
+[node name="stage" type="Sprite" parent="."]
+position = Vector2( 240, 240 )
+texture = ExtResource( 20 )
+
+[node name="Chars" type="Node" parent="."]
+
+[node name="PROT" parent="Chars" instance=ExtResource( 21 )]
+position = Vector2( 240, 240 )
+
+[node name="menu" type="Sprite" parent="."]
+position = Vector2( 240, 640 )
+texture = ExtResource( 22 )
+
+[node name="Boton1" type="Sprite" parent="menu"]
+position = Vector2( -116, -98 )
+texture = ExtResource( 23 )
+
+[node name="Boton2" type="Sprite" parent="menu"]
+position = Vector2( -116, 0 )
+texture = ExtResource( 24 )
+
+[node name="Boton3" type="Sprite" parent="menu"]
+position = Vector2( -116, 98 )
+texture = ExtResource( 25 )
+
+[node name="NubesPara" type="AnimationPlayer" parent="menu"]
+autoplay = "Nubes"
+anims/Nubes = SubResource( 4 )
+
+[node name="nubes1" type="Sprite" parent="menu/NubesPara"]
+modulate = Color( 1, 1, 1, 0.196078 )
+position = Vector2( 240, 240 )
+texture = ExtResource( 26 )
+offset = Vector2( -60.0044, 0 )
+
+[node name="nubes2" type="Sprite" parent="menu/NubesPara"]
+modulate = Color( 1, 1, 1, 0.196078 )
+position = Vector2( 960, 238.834 )
+texture = ExtResource( 27 )
+offset = Vector2( -60.0044, 0 )
+
+[node name="EndGame" type="AnimationPlayer" parent="menu"]
+anims/End = SubResource( 5 )
+
+[node name="circleblack" type="Sprite" parent="menu/EndGame"]
+visible = false
+position = Vector2( 240, 240 )
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 28 )
+
+[node name="reloj" type="Sprite" parent="menu/EndGame"]
+visible = false
+position = Vector2( 240, 240 )
+texture = ExtResource( 29 )
+offset = Vector2( 20, 0 )
+
+[node name="Boton4" parent="menu" instance=ExtResource( 30 )]
+margin_left = -46.0
+margin_top = -144.0
+margin_right = 2.0
+margin_bottom = -96.0
+
+[node name="Costo" type="Label" parent="menu/Boton4"]
+margin_left = 50.0
+margin_top = 7.0
+margin_right = 372.0
+margin_bottom = 95.0
+rect_scale = Vector2( 0.35, 0.35 )
+custom_fonts/font = ExtResource( 31 )
+
+[node name="ValorEscudo" type="Label" parent="menu/Boton4"]
+margin_left = 160.0
+margin_top = 7.0
+margin_right = 426.0
+margin_bottom = 95.0
+rect_scale = Vector2( 0.35, 0.35 )
+custom_fonts/font = ExtResource( 31 )
+align = 1
+
+[node name="Boton5" parent="menu" instance=ExtResource( 32 )]
+margin_left = -46.0
+margin_top = -92.0
+margin_right = 2.0
+margin_bottom = -44.0
+
+[node name="Costo" type="Label" parent="menu/Boton5"]
+margin_left = 50.0
+margin_top = 7.0
+margin_right = 376.0
+margin_bottom = 95.0
+rect_scale = Vector2( 0.35, 0.35 )
+custom_fonts/font = ExtResource( 31 )
+
+[node name="PorcentajeCirculo" type="Label" parent="menu/Boton5"]
+margin_left = 160.0
+margin_top = 7.0
+margin_right = 426.0
+margin_bottom = 95.0
+rect_scale = Vector2( 0.35, 0.35 )
+custom_fonts/font = ExtResource( 31 )
+align = 1
+
+[node name="Boton6" parent="menu" instance=ExtResource( 33 )]
+margin_left = -46.0
+margin_top = -40.0
+margin_right = 2.0
+margin_bottom = 8.0
+
+[node name="Costo" type="Label" parent="menu/Boton6"]
+margin_left = 50.0
+margin_top = 7.0
+margin_right = 376.0
+margin_bottom = 95.0
+rect_scale = Vector2( 0.35, 0.35 )
+custom_fonts/font = ExtResource( 31 )
+
+[node name="DañoActual" type="Label" parent="menu/Boton6"]
+margin_left = 160.0
+margin_top = 7.0
+margin_right = 426.0
+margin_bottom = 95.0
+rect_scale = Vector2( 0.35, 0.35 )
+custom_fonts/font = ExtResource( 31 )
+align = 1
+
+[node name="Boton7" parent="menu" instance=ExtResource( 34 )]
+margin_left = -46.0
+margin_top = 12.0
+margin_right = 2.0
+margin_bottom = 60.0
+
+[node name="Costo" type="Label" parent="menu/Boton7"]
+margin_left = 50.0
+margin_top = 7.0
+margin_right = 376.0
+margin_bottom = 95.0
+rect_scale = Vector2( 0.35, 0.35 )
+custom_fonts/font = ExtResource( 31 )
+
+[node name="Cash" type="Label" parent="menu"]
+margin_left = -62.0
+margin_top = 68.0
+margin_right = 749.0
+margin_bottom = 156.0
+rect_scale = Vector2( 0.35, 0.35 )
+custom_fonts/font = ExtResource( 31 )
+align = 1
+
+[node name="Score" type="Label" parent="menu"]
+margin_left = -47.0
+margin_top = 118.0
+margin_right = 1298.0
+margin_bottom = 236.0
+rect_scale = Vector2( 0.2, 0.2 )
+custom_fonts/font = ExtResource( 31 )
+align = 1
+
+[node name="bastonburn" type="Sprite" parent="menu"]
+position = Vector2( -197, -78 )
+texture = ExtResource( 35 )
+
+[node name="Particles2D" type="Particles2D" parent="menu/bastonburn"]
+amount = 1000
+process_material = SubResource( 8 )
+
+[node name="StartGame" type="Timer" parent="."]
+one_shot = true
+
+[node name="fadestartgame" type="Sprite" parent="StartGame"]
+position = Vector2( 241.432, 2300 )
+rotation = 0.00174533
+scale = Vector2( 5, 5 )
+texture = ExtResource( 36 )
+
+[node name="gray" type="Sprite" parent="StartGame"]
+modulate = Color( 0, 0, 0, 0 )
+position = Vector2( 240, 400 )
+texture = ExtResource( 37 )
+
+[node name="arrow" type="Sprite" parent="StartGame"]
+visible = false
+position = Vector2( 43, 542 )
+texture = ExtResource( 38 )
+
+[node name="arrow2" type="Sprite" parent="StartGame"]
+visible = false
+position = Vector2( 43, 640 )
+texture = ExtResource( 38 )
+
+[node name="arrow3" type="Sprite" parent="StartGame"]
+visible = false
+position = Vector2( 43, 738 )
+texture = ExtResource( 38 )
+
+[node name="Turn" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="PuedeJugar" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[node name="Audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 39 )
+
+[node name="Tween" type="Tween" parent="Audio"]
+
+[node name="AudioEnd" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 40 )
+volume_db = -10.0
+
+[connection signal="animation_finished" from="Anims" to="." method="_on_Anims_animation_finished"]
+[connection signal="animation_finished" from="menu/EndGame" to="." method="_on_EndGame_animation_finished"]
+[connection signal="timeout" from="StartGame" to="." method="_on_StartGame_timeout"]
+[connection signal="timeout" from="Turn" to="." method="_on_Turn_timeout"]
+[connection signal="timeout" from="PuedeJugar" to="." method="_on_PuedeJugar_timeout"]
+[connection signal="tween_completed" from="Audio/Tween" to="." method="_on_Tween_tween_completed"]

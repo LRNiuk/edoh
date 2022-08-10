@@ -1,0 +1,122 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Sprites/botonmusica.png" type="Texture" id=1]
+[ext_resource path="res://Sprites/botonmusicapres.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/botonnomusica.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/botonnomusicapress.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/botonmodo.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/botonmodopres.png" type="Texture" id=6]
+[ext_resource path="res://Base/Fonts/VCR_OSD_MONO_1.001.ttf" type="DynamicFontData" id=7]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+func _ready():
+	if STAGEGLOBAL.SOUND == true: 
+		get_node(\"MusicNO\").hide()
+	else: 
+		get_node(\"Music\").hide()
+		get_tree().get_root().get_node(\"Node/AudioStreamPlayer\").stop()
+
+func _on_Music_button_up():
+	STAGEGLOBAL.SOUND = false
+	#AudioServer.set_bus_volume_db(AudioServer.get_bus_index(\"Master\"), -80)
+	get_tree().get_root().get_node(\"Node/AudioStreamPlayer\").stop()
+	get_node(\"MusicNO\").show()
+	get_node(\"Music\").hide()
+
+func _on_MusicNO_button_up():
+	STAGEGLOBAL.SOUND = true
+	#AudioServer.set_bus_volume_db(AudioServer.get_bus_index(\"Master\"), 0)
+	get_tree().get_root().get_node(\"Node/AudioStreamPlayer\").play()
+	get_node(\"Music\").show()
+	get_node(\"MusicNO\").hide()
+
+func _on_StartGameMode1_button_up():
+	get_tree().get_root().get_node(\"Node/StG/black\").show()
+	get_tree().get_root().get_node(\"Node/StG/faceanimintro\").show()
+	get_tree().get_root().get_node(\"Node/AnimationPlayer\").play(\"PreStartAnim\")
+	STAGEGLOBAL.SCORE = 0
+	STAGEGLOBAL.TOTALSCORE = 0
+	STAGEGLOBAL.TURNONUMERO = 0
+	STAGEGLOBAL.HPHUESOS = 1
+	STAGEGLOBAL.PODERBALA = 1
+	STAGEGLOBAL.JUGADAHECHA = false
+	STAGEGLOBAL.TURNEND = true
+	STAGEGLOBAL.PORCENTAJECIRCULO = 4
+	STAGEGLOBAL.CIRCULOINT = 0
+	STAGEGLOBAL.HPPROT = 1
+	STAGEGLOBAL.ESCUDO = 0
+	STAGEGLOBAL.ESCUDOEXISTE = false
+	STAGEGLOBAL.FUEGO = false
+	if STAGEGLOBAL.SOUND == true:
+		tweenmusicstart_fade_out()
+
+func _on_Exit_button_up():
+	get_tree().quit()
+
+func tweenmusicstart_fade_out():
+	get_tree().get_root().get_node(\"Node/AudioStreamPlayer/Tween\").interpolate_property(get_tree().get_root().get_node(\"Node/AudioStreamPlayer\"), \"volume_db\", 0, -80, 0.8, 1, Tween.EASE_IN, 0)
+	get_tree().get_root().get_node(\"Node/AudioStreamPlayer/Tween\").start()"
+
+[sub_resource type="DynamicFont" id=2]
+size = 36
+font_data = ExtResource( 7 )
+
+[node name="TruMenu" type="Control"]
+margin_left = 40.0
+margin_top = 500.0
+margin_right = 440.0
+margin_bottom = 666.0
+script = SubResource( 1 )
+
+[node name="Music" type="TextureButton" parent="."]
+margin_left = -35.0
+margin_top = -495.0
+margin_right = 23.0
+margin_bottom = -433.0
+texture_normal = ExtResource( 1 )
+texture_pressed = ExtResource( 2 )
+
+[node name="MusicNO" type="TextureButton" parent="."]
+margin_left = -35.0
+margin_top = -495.0
+margin_right = 23.0
+margin_bottom = -433.0
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 4 )
+
+[node name="StartGameMode1" type="TextureButton" parent="."]
+margin_top = 66.0
+margin_right = 400.0
+margin_bottom = 114.0
+texture_normal = ExtResource( 5 )
+texture_pressed = ExtResource( 6 )
+
+[node name="Label" type="Label" parent="StartGameMode1"]
+margin_right = 400.0
+margin_bottom = 47.0
+custom_fonts/font = SubResource( 2 )
+text = "Start Game"
+align = 1
+valign = 1
+
+[node name="Exit" type="TextureButton" parent="."]
+margin_top = 118.0
+margin_right = 400.0
+margin_bottom = 166.0
+texture_normal = ExtResource( 5 )
+texture_pressed = ExtResource( 6 )
+
+[node name="Label2" type="Label" parent="Exit"]
+margin_right = 400.0
+margin_bottom = 47.0
+custom_fonts/font = SubResource( 2 )
+text = "Exit"
+align = 1
+valign = 1
+
+[connection signal="button_up" from="Music" to="." method="_on_Music_button_up"]
+[connection signal="button_up" from="MusicNO" to="." method="_on_MusicNO_button_up"]
+[connection signal="button_up" from="StartGameMode1" to="." method="_on_StartGameMode1_button_up"]
+[connection signal="button_up" from="Exit" to="." method="_on_Exit_button_up"]

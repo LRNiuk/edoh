@@ -1,0 +1,101 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Sprites/bala.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends Area2D
+
+const SPEED = 200
+var velocity = Vector2()
+var damage
+var flagdano
+
+func _ready():
+	damage = STAGEGLOBAL.PODERBALA
+	if STAGEGLOBAL.FUEGO == true:
+		$Bala.texture = load(\"res://Sprites/balasuper.png\")
+
+func _physics_process(delta):
+	velocity.y = SPEED * delta
+	translate(velocity)
+	if damage <= 0:
+		queue_free()
+
+func _on_VisibilityNotifier2D_viewport_exited(viewport):
+	queue_free()
+
+func _on_Bala_body_entered(body):
+	if \"Hueso\" in body.name:
+		flagdano = body.hp
+		body.hp -= damage
+		damage -= flagdano
+"
+
+[sub_resource type="Animation" id=2]
+
+length = 0.3
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 0 ]
+}
+
+[sub_resource type="CircleShape2D" id=3]
+
+custom_solver_bias = 0.0
+radius = 5.9114
+
+[node name="Bala" type="Area2D"]
+
+position = Vector2( 240, 240 )
+rotation = 1.5708
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+script = SubResource( 1 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Bala" type="Sprite" parent="." index="0"]
+
+texture = ExtResource( 1 )
+hframes = 3
+_sections_unfolded = [ "Animation", "Transform" ]
+
+[node name="AnimBala" type="AnimationPlayer" parent="Bala" index="0"]
+
+root_node = NodePath("..")
+autoplay = "Bala"
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/Bala = SubResource( 2 )
+blend_times = [  ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
+
+position = Vector2( 4, 0 )
+shape = SubResource( 3 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="." index="2"]
+
+rect = Rect2( -10, -10, 20, 20 )
+
+[connection signal="body_entered" from="." to="." method="_on_Bala_body_entered"]
+
+[connection signal="viewport_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_viewport_exited"]
+
+

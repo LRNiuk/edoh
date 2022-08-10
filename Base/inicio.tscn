@@ -1,0 +1,217 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://Sound/Inicio de la pesadilla.ogg" type="AudioStream" id=1]
+[ext_resource path="res://Sprites/inicio.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/degradado.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/title.png" type="Texture" id=4]
+[ext_resource path="res://Base/Botones/BotonInicio.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Base/Fonts/VCR_OS_MONO Dynamic.tres" type="DynamicFont" id=6]
+[ext_resource path="res://Base/Botones/TruMenu.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Sprites/black.png" type="Texture" id=8]
+[ext_resource path="res://Sprites/faceanimintro.png" type="Texture" id=9]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == \"PreStartAnim\":
+		get_tree().change_scene(\"res://Base/stage.tscn\")
+	if anim_name == \"Starting\":
+		get_node(\"AnimationPlayer\").play(\"Fade\")
+		get_node(\"blackafin\").queue_free()"
+
+[sub_resource type="Animation" id=2]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("inicio:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "PreStartAnim"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/path = NodePath("StG/black:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0.132813, 0.132813, 0.132813, 1 ), Color( 0, 0, 0, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("StG/faceanimintro:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.75, 0.75 ), Vector2( 1.5625, 2.67086 ), Vector2( 2.375, 1.9403 ), Vector2( 3.1875, 4.88499 ), Vector2( 4, 4 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("StG/faceanimintro:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 240, 233 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("StG/faceanimintro:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "Starting"
+length = 0.4
+step = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("blackafin:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 4.0
+loop = true
+step = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("degradado:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2, 4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0.784314 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.784314 ) ]
+}
+
+[sub_resource type="ParticlesMaterial" id=6]
+emission_shape = 1
+emission_sphere_radius = 20.0
+flag_disable_z = true
+spread = 1.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 10.0
+angular_velocity = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = 100.0
+angle = 45.0
+scale = 5.0
+color = Color( 0, 0.839844, 0.0524902, 0.187843 )
+
+[node name="Node" type="Node"]
+script = SubResource( 1 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+autoplay = true
+
+[node name="Tween" type="Tween" parent="AudioStreamPlayer"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Starting"
+anims/Fade = SubResource( 2 )
+anims/PreStartAnim = SubResource( 3 )
+anims/Starting = SubResource( 4 )
+
+[node name="FadeFade" type="AnimationPlayer" parent="."]
+autoplay = "FadeFade"
+anims/FadeFade = SubResource( 5 )
+
+[node name="inicio" type="Sprite" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+position = Vector2( 240, 400 )
+texture = ExtResource( 2 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+position = Vector2( 248.702, 318.003 )
+amount = 400
+lifetime = 1.5
+speed_scale = 0.4
+fract_delta = false
+process_material = SubResource( 6 )
+
+[node name="degradado" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0.910064 )
+position = Vector2( 240, 400 )
+texture = ExtResource( 3 )
+
+[node name="title" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0.392157 )
+position = Vector2( 239.524, 445.309 )
+texture = ExtResource( 4 )
+
+[node name="BotonInicio" parent="." instance=ExtResource( 5 )]
+margin_top = 550.0
+margin_right = 480.0
+margin_bottom = 646.0
+
+[node name="Tap" type="Label" parent="BotonInicio"]
+margin_left = 99.0
+margin_top = 30.0
+margin_right = 807.0
+margin_bottom = 118.0
+rect_scale = Vector2( 0.4, 0.4 )
+custom_fonts/font = ExtResource( 6 )
+text = "Tap to start"
+
+[node name="TruMenu" parent="." instance=ExtResource( 7 )]
+visible = false
+
+[node name="StG" type="Node" parent="."]
+
+[node name="black" type="Sprite" parent="StG"]
+visible = false
+modulate = Color( 0.132813, 0.132813, 0.132813, 1 )
+position = Vector2( 240, 400 )
+texture = ExtResource( 8 )
+
+[node name="faceanimintro" type="Sprite" parent="StG"]
+visible = false
+position = Vector2( 240, 233 )
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 9 )
+
+[node name="blackafin" type="Sprite" parent="."]
+modulate = Color( 0, 0, 0, 0 )
+position = Vector2( 240, 400 )
+texture = ExtResource( 8 )
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

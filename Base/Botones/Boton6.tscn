@@ -1,0 +1,60 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Sprites/boton6.png" type="Texture" id=1]
+[ext_resource path="res://Sprites/boton6pres.png" type="Texture" id=2]
+[ext_resource path="res://Sound/damageblast.ogg" type="AudioStream" id=3]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends TextureButton
+
+var precio = 35
+var vecesusado = 0
+
+func _on_Boton6_button_down():
+	if precio <= STAGEGLOBAL.SCORE and STAGEGLOBAL.JUGADAHECHA == false:
+		if STAGEGLOBAL.SOUND == true:
+			get_node(\"Audio\").play()
+		STAGEGLOBAL.PODERBALA += 1
+		STAGEGLOBAL.SCORE -= precio
+		precio = int(round(precio*7/4))
+		vecesusado += 1"
+
+[node name="Boton6" type="TextureButton" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -24.0
+margin_top = -24.0
+margin_right = 24.0
+margin_bottom = 24.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 1 )
+texture_pressed = ExtResource( 2 )
+script = SubResource( 1 )
+_sections_unfolded = [ "Rect", "Textures" ]
+
+[node name="Audio" type="AudioStreamPlayer" parent="." index="0"]
+
+stream = ExtResource( 3 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[connection signal="button_down" from="." to="." method="_on_Boton6_button_down"]
+
+
