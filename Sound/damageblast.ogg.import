@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/damageblast.ogg-82372bb87a7a1a8c2a4698e197b26cdb.oggstr"
+
+[deps]
+
+source_file="res://Sound/damageblast.ogg"
+dest_files=[ "res://.import/damageblast.ogg-82372bb87a7a1a8c2a4698e197b26cdb.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

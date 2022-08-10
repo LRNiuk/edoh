@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/reloj.ogg-6ae3caa3d58e02f59dfeedb8c2703175.oggstr"
+
+[deps]
+
+source_file="res://Sound/reloj.ogg"
+dest_files=[ "res://.import/reloj.ogg-6ae3caa3d58e02f59dfeedb8c2703175.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

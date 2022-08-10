@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/magicstrike.ogg-a1a8df03c7fb3f678c97a123442e0623.oggstr"
+
+[deps]
+
+source_file="res://Sound/magicstrike.ogg"
+dest_files=[ "res://.import/magicstrike.ogg-a1a8df03c7fb3f678c97a123442e0623.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

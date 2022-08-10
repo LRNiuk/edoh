@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Inicio de la pesadilla.ogg-546f76dd2c74a078147c8578113ff220.oggstr"
+
+[deps]
+
+source_file="res://Sound/Inicio de la pesadilla.ogg"
+dest_files=[ "res://.import/Inicio de la pesadilla.ogg-546f76dd2c74a078147c8578113ff220.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

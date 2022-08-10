@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/magicstrikecirclefire.ogg-8bdba0f4508df792580d0d2a0150464b.oggstr"
+
+[deps]
+
+source_file="res://Sound/magicstrikecirclefire.ogg"
+dest_files=[ "res://.import/magicstrikecirclefire.ogg-8bdba0f4508df792580d0d2a0150464b.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0
